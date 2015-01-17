@@ -1,0 +1,27 @@
+body {
+	color: white;
+}
+
+.menu {
+	background: #8DA1B9;
+	height: 100%;
+}
+
+.menu ul {
+	list-style-type: none;
+	padding: 0;
+}
+
+.menu ul li {
+	padding: 25px 20px;
+}
+
+.menu ul li a {
+	text-decoration: none;
+	color: white;
+}
+
+.menu ul li:hover {
+	background: #91A9C4;
+}
+
