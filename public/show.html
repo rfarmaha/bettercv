@@ -9,6 +9,26 @@
 	<script src="js/controllers/ResumeShowCtrl.js"></script>
 	<script src="js/services/NerdService.js"></script>
 	<script src="js/appRoutes.js"></script>
+	<script src="libs/pdfjs-bower/dist/pdf.js"></script>
+				<script>
+			PDFJS.getDocument('data/January 2015 Resume.pdf').then(function(pdf) {
+				pdf.getPage(1).then(function(page) {
+					var scale = 1;
+var viewport = page.getViewport(scale);
+
+					var canvas = document.getElementById('the-canvas');
+					var context = canvas.getContext('2d');
+					canvas.height = viewport.height;
+					canvas.width = viewport.width;
+
+					var renderContext = {
+						canvasContext: context,
+						viewport: viewport
+					};
+					page.render(renderContext);
+				});
+			});
+			</script>
 </head>
 <body  ng-app="MainCtrl" ng-controller="MainController">
 
@@ -26,28 +46,8 @@
 			<input type="text" ng-model="test"></input>
 			<p> {{ test }}</p>
 			<div ng-view></div>
-			<canvas id="the-canvas"></canvas>
-			<script>
-			PDFJS.getDocument('helloworld.pdf').then(function(pdf) {
-				pdf.getPage(1).then(function(page) {
-					var desiredWidth = 100;
-					var viewport = page.getViewport(1);
-					var scale = desiredWidth / viewport.width;
-					var scaledViewport = page.getViewport(scale);
+			<canvas id="the-canvas" style="text-align: center; width: 100%"></canvas>
 
-					var canvas = document.getElementById('the-canvas');
-					var context = canvas.getContext('2d');
-					canvas.height = viewport.height;
-					canvas.width = viewport.width;
-
-					var renderContext = {
-						canvasContext: context,
-						viewport: viewport
-					};
-					page.render(renderContext);
-				});
-			});
-			</script>
 		</div>
 		<div class="pure-u-1-4"style="background: #183642">adfasdf</div>
 	</div>
