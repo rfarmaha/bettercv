@@ -2,32 +2,54 @@
 <head>
 	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
 	<link rel='stylesheet' href="css/style.css">
-			<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
-		<script src="libs/angular-route/angular-route.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
+	<script src="libs/angular-route/angular-route.min.js"></script>
 	<!-- ANGULAR CUSTOM -->
-    <script src="js/controllers/MainCtrl.js"></script>
-    <script src="js/controllers/ResumeShowCtrl.js"></script>
-    <script src="js/services/NerdService.js"></script>
-    <script src="js/appRoutes.js"></script>
+	<script src="js/controllers/MainCtrl.js"></script>
+	<script src="js/controllers/ResumeShowCtrl.js"></script>
+	<script src="js/services/NerdService.js"></script>
+	<script src="js/appRoutes.js"></script>
 </head>
 <body  ng-app="MainCtrl" ng-controller="MainController">
 
 	<div class="pure-g">
 		<nav class="pure-u-1-6 menu">
 			<ul>
-		<li><h1>MENU</h1></li>
-        <li><a href="/home.html">HOME</a></li>
-        <li><a href="#">RESUMES</a></li>
-        <li><a href="#">SIGN OUT</a></li>
-        <li><a href="#">ABOUT</a></li>
-    </ul>
+				<li><h1>MENU</h1></li>
+				<li><a href="/home.html">HOME</a></li>
+				<li><a href="#">RESUMES</a></li>
+				<li><a href="#">SIGN OUT</a></li>
+				<li><a href="#">ABOUT</a></li>
+			</ul>
 		</nav>
 		<div class="pure-u-7-12"style="background: #EAEAEA"><h1>Better CV</h1>
 			<input type="text" ng-model="test"></input>
 			<p> {{ test }}</p>
 			<div ng-view></div>
+			<canvas id="the-canvas"></canvas>
+			<script>
+			PDFJS.getDocument('helloworld.pdf').then(function(pdf) {
+				pdf.getPage(1).then(function(page) {
+					var desiredWidth = 100;
+					var viewport = page.getViewport(1);
+					var scale = desiredWidth / viewport.width;
+					var scaledViewport = page.getViewport(scale);
+
+					var canvas = document.getElementById('the-canvas');
+					var context = canvas.getContext('2d');
+					canvas.height = viewport.height;
+					canvas.width = viewport.width;
+
+					var renderContext = {
+						canvasContext: context,
+						viewport: viewport
+					};
+					page.render(renderContext);
+				});
+			});
+			</script>
 		</div>
-			<div class="pure-u-1-4"style="background: #183642">adfasdf</div>
-		</div>
+		<div class="pure-u-1-4"style="background: #183642">adfasdf</div>
+	</div>
 </body>
 </html>
