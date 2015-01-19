@@ -2,10 +2,13 @@
 
 // modules =================================================
 var express        = require('express');
+var multer		   = require('multer');
 var app            = express();
+var done 		   = false;
 var cookieParser   = require('cookie-parser');
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
+var fs 			   = require('fs');
 var flash = require('connect-flash');
 var LocalStrategy = require('passport-local').Strategy
 
@@ -59,6 +62,41 @@ passport.use(new LocalStrategy(function(username, password, done) {
     done(null, false);
   }
 }));
+
+/*Configure the multer.*/
+
+app.use(multer({ dest: './uploads/',
+ rename: function (fieldname, filename) {
+    return filename+Date.now();
+  },
+onFileUploadStart: function (file) {
+  console.log(file.originalname + ' is starting ...')
+},
+onFileUploadComplete: function (file) {
+  console.log(file.fieldname + ' uploaded to  ' + file.path)
+  done=true;
+}
+}));
+
+/*Handling routes.*/
+
+app.get('/',function(request ,response){
+      res.sendfile("index.html");
+});
+
+app.post('/file-upload', function (request, response) {
+
+  fs.readFile("usernameresume", function(err, data) {
+
+    var newPath = "./public/data";
+    fs.writeFile(newPath, data, function (err) {
+      console.log("Finished writing file..." + err);
+      response.redirect("back");
+    });
+
+  });
+
+});
 
 // routes ==================================================
 require('./routes/index')(app, passport); // configure our routes
